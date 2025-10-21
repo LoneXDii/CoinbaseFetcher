@@ -10,7 +10,7 @@ public class OhlcCalculationService : IOhlcCalculationService
     private PeriodData _currentOHLC;
     private readonly object _lock = new object();
 
-    public event Action<PeriodData>? OnOhlcCompleted;
+    public event Action<PeriodData> OnOhlcCalculated;
 
     public OhlcCalculationService(TimeSpan interval)
     {
@@ -28,7 +28,7 @@ public class OhlcCalculationService : IOhlcCalculationService
             {
                 if (_currentOHLC != null)
                 {
-                    OnOhlcCompleted?.Invoke(_currentOHLC);
+                    OnOhlcCalculated?.Invoke(_currentOHLC);
                 }
                 
                 InitializeNewPeriod(tickTime);

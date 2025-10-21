@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using CoinbaseFetcher.Coinbase.Models;
 using CoinbaseFetcher.Coinbase.Services.Interfaces;
+using CoinbaseFetcher.Email.Services.Interfaces;
 using Microsoft.Extensions.Hosting;
 
 namespace CoinbaseFetcher.Coinbase.Services.Implementations;
@@ -9,19 +10,22 @@ public class CoinbaseDataProcessingService : BackgroundService
 {
     private readonly IWebSocketService _webSocketService;
     private readonly IOhlcCalculationService _ohlcCalculator;
+    private readonly IEmailService _emailService;
 
     public CoinbaseDataProcessingService(
         IWebSocketService webSocketService,
-        IOhlcCalculationService ohlcCalculator)
+        IOhlcCalculationService ohlcCalculator,
+        IEmailService emailService)
     {
         _webSocketService = webSocketService;
         _ohlcCalculator = ohlcCalculator;
+        _emailService = emailService;
         
-        _webSocketService.OnTickerReceived += OnTickerReceived;
-        _ohlcCalculator.OnOhlcCompleted += OnOhlcCalculated;
+        _webSocketService.OnTickerReceived += ProcessTick;
+        _ohlcCalculator.OnOhlcCalculated += SendEmail;
     }
     
-    private void OnTickerReceived(WebSocketData ticker)
+    private void ProcessTick(WebSocketData ticker)
     {
         if (ticker.ProductId == "BTC-USD")
         {
@@ -29,9 +33,9 @@ public class CoinbaseDataProcessingService : BackgroundService
         }
     }
     
-    private void OnOhlcCalculated(PeriodData ohlc)
+    private void SendEmail(PeriodData ohlc)
     {
-        Console.WriteLine($"Period data: {JsonSerializer.Serialize(ohlc)}");
+        _emailService.SendEmail(ohlc);
     }
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

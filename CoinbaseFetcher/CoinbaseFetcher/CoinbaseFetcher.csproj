@@ -5,9 +5,11 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
+        <UserSecretsId>67da9725-3252-4952-9727-acf21f5fae91</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="MailKit" Version="4.14.1" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.10" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.10" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.10" />

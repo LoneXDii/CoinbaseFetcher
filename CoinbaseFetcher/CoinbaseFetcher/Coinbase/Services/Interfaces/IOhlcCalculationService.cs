@@ -4,7 +4,7 @@ namespace CoinbaseFetcher.Coinbase.Services.Interfaces;
 
 public interface IOhlcCalculationService
 {
-    event Action<PeriodData> OnOhlcCompleted;
+    event Action<PeriodData> OnOhlcCalculated;
 
     void ProcessTick(WebSocketData ticker);
 }
