@@ -1,4 +1,4 @@
-﻿namespace CoinbaseFetcher.Coinbase.Models;
+﻿namespace CoinbaseFetcher.Domain.Models;
 
 public class PeriodData
 {
