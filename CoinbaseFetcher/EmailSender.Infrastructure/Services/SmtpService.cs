@@ -24,11 +24,12 @@ internal class SmtpService : ISmtpService
         mimeMessage.To.Add(MailboxAddress.Parse(_smtpConfiguration.ToEmail));
         mimeMessage.Subject = subject;
 
-        var bodyBuilder = new BodyBuilder
+        var messageBodyBuilder = new BodyBuilder
         {
             HtmlBody = message
         };
-        mimeMessage.Body = bodyBuilder.ToMessageBody();
+        
+        mimeMessage.Body = messageBodyBuilder.ToMessageBody();
 
         using var smtpClient = new SmtpClient();
 
