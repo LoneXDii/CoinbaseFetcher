@@ -32,22 +32,19 @@ internal class DataProcessingService : IDataProcessingService
 
     private void ProcessTick(TickData tickData)
     {
-        lock (_lock)
+        var tickTime = tickData.DateTime;
+        
+        if (tickTime >= _currentPeriodStart + _calculationPeriodInterval)
         {
-            var tickTime = tickData.DateTime;
-            
-            if (tickTime >= _currentPeriodStart + _calculationPeriodInterval)
+            if (_currentPeriodData != null)
             {
-                if (_currentPeriodData != null)
-                {
-                    _messageBus.SendPeriodDataCalculatedEvent(_currentPeriodData);
-                }
-                
-                InitializeNewPeriod(tickTime);
+                _messageBus.SendPeriodDataCalculatedEvent(_currentPeriodData);
             }
             
-            UpdateCurrentPeriodData(tickData.Price, tickTime);
+            InitializeNewPeriod(tickTime);
         }
+        
+        UpdateCurrentPeriodData(tickData.Price, tickTime);
     }
     
     private void InitializeNewPeriod(DateTime tickTime)

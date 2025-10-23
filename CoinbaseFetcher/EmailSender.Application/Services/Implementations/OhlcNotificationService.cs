@@ -15,10 +15,10 @@ internal class OhlcNotificationService : IOhlcNotificationService
 
     public async Task SendOhlcEmailNotificationAsync(OhlcData ohlcData, CancellationToken cancellationToken)
     {
-        var emailSubject = $"{ohlcData.Symbol} OHLC";
         var emailBody = BuildEmailHtmlBody(ohlcData);
+        var emailSubject = $"{ohlcData.Symbol} OHLC";
         
-        await _smtpService.SendEmailAsync(emailSubject, emailBody, cancellationToken);
+        await _smtpService.SendEmailAsync(emailBody, emailSubject, cancellationToken);
     }
 
     private string BuildEmailHtmlBody(OhlcData ohlcData)
@@ -30,7 +30,7 @@ internal class OhlcNotificationService : IOhlcNotificationService
                 <h2>Low: {ohlcData.Low}</h2>
                 <h2>Close: {ohlcData.Close}</h2>
                 <p>Period start: {ohlcData.PeriodStart.ToString()} UTC</p>
-                <p>Period end: {ohlcData.PeriodEnd.ToString()} UTC</p>
+                <p>Period end: {ohlcData.Timestamp.ToString()} UTC</p>
                 """;
     }
 }

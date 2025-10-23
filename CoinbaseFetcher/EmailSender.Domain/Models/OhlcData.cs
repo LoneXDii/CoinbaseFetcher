@@ -9,5 +9,4 @@ public class OhlcData
     public decimal Low { get; set; }
     public decimal Close { get; set; }
     public DateTime PeriodStart { get; set; }
-    public DateTime PeriodEnd { get; set; }
 }

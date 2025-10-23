@@ -26,12 +26,15 @@ internal class CoinbaseOhlcMessagesConsumer : IOhlcMessagesConsumer
         var consumerConfig = new ConsumerConfig
         {
             BootstrapServers = _kafkaConfiguration.Server,
+            GroupId = "group"
         };
         
         using var consumer = new ConsumerBuilder<Ignore, OhlcData>(consumerConfig)
             .SetValueDeserializer(new KafkaDeserializer<OhlcData>())
             .Build();
 
+        consumer.Subscribe(_kafkaConfiguration.CoinbaseOhlcTopicName);
+        
         while (!cancellationToken.IsCancellationRequested)
         {
             var consumeResult = consumer.Consume(TimeSpan.FromSeconds(5));

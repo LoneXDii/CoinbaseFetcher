@@ -11,10 +11,12 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<WebSocketConfiguration>(options => configuration.GetSection("WebSocket").Bind(options));
+        services
+            .Configure<WebSocketConfiguration>(options => configuration.GetSection("WebSocket").Bind(options))
+            .Configure<KafkaConfiguration>(options => configuration.GetSection("Kafka").Bind(options));;
      
         services.AddSingleton<IWebSocketFetchingService, WebSocketFetchingService>();
-        services.AddSingleton<IProducer, ConsoleProducer>();
+        services.AddSingleton<IProducer, KafkaProducer>();
         
         return services;
     }
