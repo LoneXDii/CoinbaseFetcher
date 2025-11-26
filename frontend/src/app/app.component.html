@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="header">
+    <button
+      [class.subscribed]="isSubscribed"
+      (click)="toggleSubscription()">
+      {{ isSubscribed ? 'Unsubscribe' : 'Subscribe' }}
+    </button>
+  </div>
+
+  <div class="trades-container">
+    <div class="trades-list">
+      <div *ngFor="let trade of trades" class="trade-item">
+        <div class="trade-product">{{ trade.productId }}</div>
+        <div class="trade-price">${{ trade.price }}</div>
+        <div class="trade-time">{{ trade.dateTime | date:'short' }}</div>
+      </div>
+      <div *ngIf="trades.length === 0" class="no-trades">
+        No trades fetched
+      </div>
+    </div>
+  </div>
+
+  <router-outlet />
+</div>

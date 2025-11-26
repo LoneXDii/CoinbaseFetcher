@@ -8,7 +8,6 @@ namespace CoinbaseFetcher.Application.Services.Implementations;
 
 internal class DataProcessingService : IDataProcessingService
 {
-    private readonly Lock _lock = new Lock();
     private readonly IMessageBus _messageBus;
     private readonly TimeSpan _calculationPeriodInterval;
     
@@ -21,7 +20,6 @@ internal class DataProcessingService : IDataProcessingService
     {
         _messageBus = messageBus;
         _calculationPeriodInterval = TimeSpan.FromMinutes(calculationPeriodConfiguration.Value.CalculationIntervalInMinutes);
-        
     }
 
     public void StartDataProcessing()
