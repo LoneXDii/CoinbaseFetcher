@@ -1,9 +1,8 @@
 ﻿using Confluent.Kafka;
 using EmailSender.Application.Services.Interfaces;
 using EmailSender.Domain.Interfaces;
-using EmailSender.Domain.Models;
 using EmailSender.Infrastructure.Configuration;
-using EmailSender.Infrastructure.Consumers.Deserializers;
+using EmailSender.Infrastructure.Consumers.Factories;
 using Microsoft.Extensions.Options;
 
 namespace EmailSender.Infrastructure.Consumers;
@@ -12,12 +11,15 @@ internal class CoinbaseOhlcMessagesConsumer : IOhlcMessagesConsumer
 {
     private readonly KafkaConfiguration _kafkaConfiguration;
     private readonly IOhlcNotificationService _ohlcNotificationService;
+    private readonly IOhlcDataConsumerFactory _ohlcDataConsumerFactory;
 
     public CoinbaseOhlcMessagesConsumer(
         IOhlcNotificationService ohlcNotificationService,
+        IOhlcDataConsumerFactory ohlcDataConsumerFactory,
         IOptions<KafkaConfiguration> kafkaConfiguration)
     {
         _ohlcNotificationService = ohlcNotificationService;
+        _ohlcDataConsumerFactory = ohlcDataConsumerFactory;
         _kafkaConfiguration = kafkaConfiguration.Value;
     }
 
@@ -29,9 +31,7 @@ internal class CoinbaseOhlcMessagesConsumer : IOhlcMessagesConsumer
             GroupId = "group"
         };
         
-        using var consumer = new ConsumerBuilder<Ignore, OhlcData>(consumerConfig)
-            .SetValueDeserializer(new KafkaDeserializer<OhlcData>())
-            .Build();
+        using var consumer = _ohlcDataConsumerFactory.GetOhlcDataConsumer(consumerConfig);
 
         consumer.Subscribe(_kafkaConfiguration.CoinbaseOhlcTopicName);
         

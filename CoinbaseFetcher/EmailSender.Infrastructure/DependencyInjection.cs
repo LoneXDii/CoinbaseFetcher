@@ -1,6 +1,7 @@
 ﻿using EmailSender.Domain.Interfaces;
 using EmailSender.Infrastructure.Configuration;
 using EmailSender.Infrastructure.Consumers;
+using EmailSender.Infrastructure.Consumers.Factories;
 using EmailSender.Infrastructure.Services;
 using EmailSender.Infrastructure.Services.Factories;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,7 @@ public static class DependencyInjection
         services.AddSingleton<ISmtpService, SmtpService>();
         services.AddSingleton<IOhlcMessagesConsumer, CoinbaseOhlcMessagesConsumer>();
         services.AddSingleton<ISmtpClientFactory, SmtpClientFactory>();
+        services.AddScoped<IOhlcDataConsumerFactory, OhlcDataConsumerFactory>();
         
         return services;
     }

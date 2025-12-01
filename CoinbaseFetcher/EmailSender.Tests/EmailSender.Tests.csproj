@@ -23,10 +23,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Presentation\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\EmailSender.Application\EmailSender.Application.csproj" />
       <ProjectReference Include="..\EmailSender.Domain\EmailSender.Domain.csproj" />
       <ProjectReference Include="..\EmailSender.Infrastructure\EmailSender.Infrastructure.csproj" />

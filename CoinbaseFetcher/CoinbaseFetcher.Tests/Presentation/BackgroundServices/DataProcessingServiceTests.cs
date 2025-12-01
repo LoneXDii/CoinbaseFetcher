@@ -9,12 +9,11 @@ namespace CoinbaseFetcher.Tests.Presentation.BackgroundServices;
 
 public class DataProcessingServiceTests
 {
-     private readonly Mock<IDataProcessingService> _dataProcessingServiceMock;
+    private readonly Mock<IDataProcessingService> _dataProcessingServiceMock;
     private readonly Mock<IMessageBus> _messageBusMock;
     private readonly Mock<IProducer> _producerMock;
     private readonly Mock<ITickDataBroadcastService> _tickDataBroadcastServiceMock;
     private readonly DataProcessingService _sut;
-    private readonly CancellationTokenSource _cts;
 
     public DataProcessingServiceTests()
     {
@@ -22,7 +21,6 @@ public class DataProcessingServiceTests
         _messageBusMock = new Mock<IMessageBus>();
         _producerMock = new Mock<IProducer>();
         _tickDataBroadcastServiceMock = new Mock<ITickDataBroadcastService>();
-        _cts = new CancellationTokenSource();
         
         _sut = new DataProcessingService(
             _dataProcessingServiceMock.Object,

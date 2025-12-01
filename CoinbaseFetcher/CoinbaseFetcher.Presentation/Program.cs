@@ -3,7 +3,6 @@ using CoinbaseFetcher.Infrastructure;
 using CoinbaseFetcher.Presentation.Services.Implementations;
 using CoinbaseFetcher.Presentation.BackgroundServices;
 using CoinbaseFetcher.Presentation.Hubs;
-using CoinbaseFetcher.Presentation.Services;
 using CoinbaseFetcher.Presentation.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;

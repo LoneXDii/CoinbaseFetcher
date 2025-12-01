@@ -1,7 +1,6 @@
 ﻿using CoinbaseFetcher.Domain.Models;
 using CoinbaseFetcher.Presentation.Services.Implementations;
 using CoinbaseFetcher.Presentation.Hubs;
-using CoinbaseFetcher.Presentation.Services;
 using Microsoft.AspNetCore.SignalR;
 using Moq;
 

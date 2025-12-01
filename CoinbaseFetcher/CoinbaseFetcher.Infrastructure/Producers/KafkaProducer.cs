@@ -1,7 +1,7 @@
 ﻿using CoinbaseFetcher.Domain.Interfaces;
 using CoinbaseFetcher.Domain.Models;
 using CoinbaseFetcher.Infrastructure.Configuration;
-using CoinbaseFetcher.Infrastructure.Producers.Serializers;
+using CoinbaseFetcher.Infrastructure.Producers.Factories;
 using Confluent.Kafka;
 using Microsoft.Extensions.Options;
 
@@ -10,9 +10,13 @@ namespace CoinbaseFetcher.Infrastructure.Producers;
 internal class KafkaProducer : IProducer
 {
     private readonly KafkaConfiguration _kafkaConfiguration;
+    private readonly IProducerFactory _producerFactory;
 
-    public KafkaProducer(IOptions<KafkaConfiguration> kafkaConfiguration)
+    public KafkaProducer(
+        IOptions<KafkaConfiguration> kafkaConfiguration,
+        IProducerFactory producerFactory)
     {
+        _producerFactory = producerFactory;
         _kafkaConfiguration = kafkaConfiguration.Value;
     }
     
@@ -24,9 +28,7 @@ internal class KafkaProducer : IProducer
             Acks = Acks.Leader,
         };
         
-        using var producer = new ProducerBuilder<Null, PeriodData>(producerConfig)
-            .SetValueSerializer(new KafkaSerializer<PeriodData>())
-            .Build();
+        using var producer = _producerFactory.GetProducer(producerConfig);
 
         var message = new Message<Null, PeriodData>()
         {
