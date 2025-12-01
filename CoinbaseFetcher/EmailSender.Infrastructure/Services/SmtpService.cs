@@ -1,6 +1,6 @@
 ﻿using EmailSender.Domain.Interfaces;
 using EmailSender.Infrastructure.Configuration;
-using MailKit.Net.Smtp;
+using EmailSender.Infrastructure.Services.Factories;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
@@ -10,9 +10,13 @@ namespace EmailSender.Infrastructure.Services;
 internal class SmtpService : ISmtpService
 {
     private readonly SmtpConfiguration _smtpConfiguration;
-
-    public SmtpService(IOptions<SmtpConfiguration> smtpConfiguration)
+    private readonly ISmtpClientFactory _smtpClientFactory;
+    
+    public SmtpService(
+        IOptions<SmtpConfiguration> smtpConfiguration,
+        ISmtpClientFactory smtpClientFactory)
     {
+        _smtpClientFactory = smtpClientFactory;
         _smtpConfiguration = smtpConfiguration.Value;
     }
 
@@ -31,7 +35,7 @@ internal class SmtpService : ISmtpService
         
         mimeMessage.Body = messageBodyBuilder.ToMessageBody();
 
-        using var smtpClient = new SmtpClient();
+        using var smtpClient = _smtpClientFactory.GetSmtpClient();
 
         await smtpClient.ConnectAsync(
             _smtpConfiguration.Host,

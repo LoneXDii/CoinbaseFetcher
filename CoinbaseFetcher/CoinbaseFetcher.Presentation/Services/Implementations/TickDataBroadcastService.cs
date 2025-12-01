@@ -1,16 +1,15 @@
-using CoinbaseFetcher.Domain.Interfaces;
 using CoinbaseFetcher.Domain.Models;
 using CoinbaseFetcher.Presentation.Hubs;
+using CoinbaseFetcher.Presentation.Services.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 
-namespace CoinbaseFetcher.Presentation.Services;
+namespace CoinbaseFetcher.Presentation.Services.Implementations;
 
-public class TickDataBroadcastService
+public class TickDataBroadcastService : ITickDataBroadcastService
 {
     private readonly IHubContext<CoinbaseHub> _hubContext;
 
     public TickDataBroadcastService(
-        IMessageBus messageBus,
         IHubContext<CoinbaseHub> hubContext)
     {
         _hubContext = hubContext;
