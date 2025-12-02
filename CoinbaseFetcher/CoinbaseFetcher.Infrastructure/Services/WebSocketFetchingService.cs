@@ -5,22 +5,24 @@ using System.Text.Json;
 using CoinbaseFetcher.Domain.Interfaces;
 using CoinbaseFetcher.Domain.Models;
 using CoinbaseFetcher.Infrastructure.Configuration;
+using CoinbaseFetcher.Infrastructure.Services.Helpers;
 using Microsoft.Extensions.Options;
 
 namespace CoinbaseFetcher.Infrastructure.Services;
 
 internal class WebSocketFetchingService : IWebSocketFetchingService
 {
-    private readonly ClientWebSocket _webSocketClient;
+    private readonly IWebSocketClient _webSocketClient;
     private readonly WebSocketConfiguration _webSocketConfiguration;
     private readonly IMessageBus _messageBus;
 
     public WebSocketFetchingService(
         IOptions<WebSocketConfiguration> webSocketConfiguration,
+        IWebSocketClient webSocketClient,
         IMessageBus messageBus)
     {
-        _webSocketClient = new ClientWebSocket();
         _webSocketConfiguration = webSocketConfiguration.Value;
+        _webSocketClient = webSocketClient;
         _messageBus = messageBus;
     }
 
